@@ -1,0 +1,31 @@
+{
+  "name": "vue-inversify",
+  "version": "0.0.1",
+  "description": "Dependency Injection for VueJS using Inversify",
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/declspec/vue-inversify.git"
+  },
+  "keywords": [
+    "vue",
+    "js",
+    "di",
+    "ioc",
+    "inversify"
+  ],
+  "author": "Jason Larke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/declspec/vue-inversify/issues"
+  },
+  "homepage": "https://github.com/declspec/vue-inversify#readme",
+  "dependencies": {
+    "inversify": "^5.0.1",
+    "reflect-metadata": "^0.1.12",
+    "vue": "^2.5.21"
+  }
+}
