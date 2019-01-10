@@ -12,7 +12,10 @@ type InjectableVueClass = {
     $inject?: { [key: string]: interfaces.ServiceIdentifier<any> }
 };
 
-export default function VueInversify(instance: VueConstructor<Vue>, options: VueInversifyOptions) {
+export default function VueInversify(instance: VueConstructor<Vue>, options?: VueInversifyOptions) {
+    if (typeof(options) === 'undefined')
+        throw new TypeError('Missing required options');
+
     const { container } = options;
 
     instance.mixin({
