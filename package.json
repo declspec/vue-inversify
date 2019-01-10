@@ -2,7 +2,7 @@
   "name": "vue-inversify",
   "version": "0.0.1",
   "description": "Dependency Injection for VueJS using Inversify",
-  "main": "./src/index.ts",
+  "main": "./bin/vue-inversify.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,5 +27,11 @@
     "inversify": "^5.0.1",
     "reflect-metadata": "^0.1.12",
     "vue": "^2.5.21"
+  },
+  "devDependencies": {
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.2.2",
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.2.1"
   }
 }
