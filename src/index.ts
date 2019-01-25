@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { interfaces } from 'inversify';
 import Vue, { VueConstructor } from 'vue';
 
-type VueInversifyOptions = {
+export type VueInversifyOptions = {
     container: interfaces.Container;
 };
 

@@ -7,6 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "src",
+    "bin/*.js",
+    "types/*.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/declspec/vue-inversify.git"
