@@ -1,7 +1,7 @@
-import 'reflect-metadata';
-
 import { interfaces } from 'inversify';
 import Vue, { VueConstructor } from 'vue';
+
+declare var Reflect: any;
 
 export type VueInversifyOptions = {
     container: interfaces.Container;

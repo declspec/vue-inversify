@@ -31,7 +31,6 @@
   "homepage": "https://github.com/declspec/vue-inversify#readme",
   "dependencies": {
     "inversify": "^5.0.1",
-    "reflect-metadata": "^0.1.12",
     "vue": "^2.5.21"
   },
   "devDependencies": {

@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { interfaces } from 'inversify';
 import Vue, { VueConstructor } from 'vue';
 export declare type VueInversifyOptions = {
