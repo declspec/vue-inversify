@@ -1,8 +1,6 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'production',
-    devtool: 'source-map',
     entry: { 'vue-inversify': './src/index.ts' },
     module: {
         rules: [
