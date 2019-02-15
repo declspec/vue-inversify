@@ -1,7 +1,6 @@
 import { interfaces } from 'inversify';
-import Vue, { VueConstructor } from 'vue';
-export declare type VueInversifyOptions = {
-    container: interfaces.Container;
-};
-export default function VueInversify(instance: VueConstructor<Vue>, options?: VueInversifyOptions): void;
-export declare function inject(identifier?: interfaces.ServiceIdentifier<any>): (target: Vue, prop: string) => void;
+import Vue, { PluginFunction } from 'vue';
+declare const VueInversify: PluginFunction<any>;
+declare const inject: (identifier?: string | symbol | interfaces.Newable<any> | interfaces.Abstract<any> | undefined) => (target: Vue, prop: string) => void;
+export default VueInversify;
+export { inject };
