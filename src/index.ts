@@ -3,6 +3,18 @@ import Vue, { PluginFunction } from 'vue';
 
 declare var Reflect: any;
 
+declare module "vue/types/options" {
+    interface ComponentOptions<V extends Vue> {
+        container?: interfaces.Container;
+    }
+}
+
+declare module "vue/types/vue" {
+    interface Vue {
+        $container?: interfaces.Container;
+    }
+}
+
 type InjectableVueClass = {
     new (...args: any[]) : Vue;
     $inject?: { [key: string]: interfaces.ServiceIdentifier<any> }
