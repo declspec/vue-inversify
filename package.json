@@ -1,6 +1,6 @@
 {
   "name": "vue-inversify",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Dependency Injection for VueJS using Inversify",
   "main": "./bin/vue-inversify.js",
   "types": "./types/index.d.ts",
