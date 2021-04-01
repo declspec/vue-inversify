@@ -1,47 +1,37 @@
 import { interfaces } from 'inversify';
-import Vue, { PluginFunction } from 'vue';
+import { ComponentOptions } from 'vue/types/options';
+import { PluginFunction } from 'vue/types/plugin';
+import { Vue, VueConstructor } from 'vue/types/vue';
 
-declare var Reflect: any;
+declare const Reflect: {
+    getMetadata(metadataKey: string, target: unknown, propertyKey: string): unknown;
+};
 
 declare module "vue/types/options" {
     interface ComponentOptions<V extends Vue> {
-        container?: interfaces.Container;
+            container?: interfaces.Container;
+            dependencies?: { [key: string]: interfaces.ServiceIdentifier<unknown> };
     }
 }
 
-declare module "vue/types/vue" {
-    interface Vue {
-        $container?: interfaces.Container;
-    }
-}
-
-type InjectableVueClass = {
-    new (...args: any[]) : Vue;
-    $inject?: { [key: string]: interfaces.ServiceIdentifier<any> }
+type InjectableVueClass = VueConstructor<Vue> & {
+    options: ComponentOptions<Vue>
 };
 
-const VueInversify: PluginFunction<any> = instance => {
+const VueInversify: PluginFunction<unknown> = instance => {
     instance.mixin({
         beforeCreate() {
-            if (this.$options.container) 
-                this.$container = this.$options.container;
-            else {
-                // Cascade the '$container' down all children as they're created
-                const root = (this.$parent || this);
-                this.$container = root.$container;
-            }
-
-            const $inject = (this.constructor as InjectableVueClass).$inject;
-            const container = this.$container;
+            const dependencies = this.$options.dependencies;
+            const container = this.$options.container || (this.$options.container = getContainer(this));
             
-            if ($inject) {
+            if (dependencies) {
                 if (!container)
                     throw new TypeError('vue-inversify: encountered props marked with @inject but no container was provided when creating the Vue instance');
 
-                Object.keys($inject).forEach(key => {
+                Object.keys(dependencies).forEach(key => {
                     Object.defineProperty(this, key, {
                         enumerable: true,
-                        value: container.get($inject[key])
+                        value: container.get(dependencies[key])
                     });
                 });
             }
@@ -49,21 +39,33 @@ const VueInversify: PluginFunction<any> = instance => {
     });
 };
 
-const inject = (identifier?: interfaces.ServiceIdentifier<any>) => {
+const inject = (identifier?: interfaces.ServiceIdentifier<unknown>) => {
     return function(target: Vue, prop: string) {
         // Try use reflection to generate the identifier if not provided explicitly.
         if (!identifier && typeof(Reflect) !== 'undefined' && typeof(Reflect.getMetadata) === 'function')
-            identifier = Reflect.getMetadata('design:type', target, prop);
+            identifier = Reflect.getMetadata('design:type', target, prop) as interfaces.ServiceIdentifier<unknown>;
 
         if (!identifier)
             throw new TypeError('Unable to resolve identifier; please specify it explicitly');
 
         const injectable = (typeof(target) === 'function' ? target : target.constructor) as InjectableVueClass;
-        const $inject = injectable.$inject || (injectable.$inject = {});
+        const options = injectable.options || (injectable.options = {});
+        const dependencies = options.dependencies || (options.dependencies = {});
 
-        $inject[prop] = identifier;
+        dependencies[prop] = identifier;
     }
 };
+
+function getContainer(component: Vue): interfaces.Container | undefined {
+    let container: interfaces.Container | undefined;
+
+    while (component != null && !container) {
+        container = component.$options.container;
+        component = component.$parent;
+    }
+
+    return container;
+}
 
 export default VueInversify;
 export { inject };
